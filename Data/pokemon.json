@@ -477,5 +477,570 @@
       "spd": 40,
       "spe": 20
     }
+  },
+  "Bagon":
+  {
+    "type": [
+      "Dragon"
+    ],
+    "base_stats": {
+      "hp": 45,
+      "atk": 75,
+      "def": 60,
+      "spa": 40,
+      "spd": 30,
+      "spe": 50
+    }
+  },
+  "Baltoy":
+  {
+    "type": [
+      "Ground",
+      "Psychic"
+    ],
+    "base_stats": {
+      "hp": 40,
+      "atk": 40,
+      "def": 55,
+      "spa": 40,
+      "spd": 70,
+      "spe": 55
+    }
+  },
+  "Banette":
+  {
+    "type": [
+      "Ghost"
+    ],
+    "base_stats": {
+      "hp": 64,
+      "atk": 115,
+      "def": 65,
+      "spa": 83,
+      "spd": 63,
+      "spe": 65
+    }
+  },
+  "Barbaracle":
+  {
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 72,
+      "atk": 105,
+      "def": 115,
+      "spa": 54,
+      "spd": 86,
+      "spe": 68
+    }
+  },
+  "Barboach":
+  {
+    "type": [
+      "Ground",
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 50,
+      "atk": 48,
+      "def": 43,
+      "spa": 46,
+      "spd": 41,
+      "spe": 60
+    }
+  },
+  "Basculin":
+  {
+    "type": [
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 70,
+      "atk": 92,
+      "def": 65,
+      "spa": 80,
+      "spd": 55,
+      "spe": 98
+    }
+  },
+  "Bastiodon":
+  {
+    "type": [
+      "Rock",
+      "Steel"
+    ],
+    "base_stats": {
+      "hp": 60,
+      "atk": 52,
+      "def": 168,
+      "spa": 47,
+      "spd": 138,
+      "spe": 30
+    }
+  },
+  "Bayleef":
+  {
+    "type": [
+      "Grass"
+    ],
+    "base_stats": {
+      "hp": 60,
+      "atk": 62,
+      "def": 80,
+      "spa": 63,
+      "spd": 80,
+      "spe": 60
+    }
+  },
+  "Beartic":
+  {
+    "type": [
+      "Ice"
+    ],
+    "base_stats": {
+      "hp": 95,
+      "atk": 110,
+      "def": 80,
+      "spa": 70,
+      "spd": 80,
+      "spe": 50
+    }
+  },
+  "Beautifly":
+  {
+    "type": [
+      "Bug",
+      "Flying"
+    ],
+    "base_stats": {
+      "hp": 60,
+      "atk": 70,
+      "def": 50,
+      "spa": 100,
+      "spd": 50,
+      "spe": 65
+    }
+  },
+  "Beedrill":
+  {
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "base_stats": {
+      "hp": 65,
+      "atk": 90,
+      "def": 40,
+      "spa": 45,
+      "spd": 80,
+      "spe": 75
+    }
+  },
+  "Beheeyem":
+  {
+    "type": [
+      "Psychic"
+    ],
+    "base_stats": {
+      "hp": 75,
+      "atk": 75,
+      "def": 75,
+      "spa": 125,
+      "spd": 95,
+      "spe": 40
+    }
+  },
+  "Beldum":
+  {
+    "type": [
+      "Psychic",
+      "Steel"
+    ],
+    "base_stats": {
+      "hp": 40,
+      "atk": 55,
+      "def": 80,
+      "spa": 35,
+      "spd": 60,
+      "spe": 30
+    }
+  },
+  "Bellossom":
+  {
+    "type": [
+      "Grass"
+    ],
+    "base_stats": {
+      "hp": 75,
+      "atk": 80,
+      "def": 95,
+      "spa": 90,
+      "spd": 100,
+      "spe": 50
+    }
+  },
+  "Bellsprout":
+  {
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "base_stats": {
+      "hp": 50,
+      "atk": 75,
+      "def": 35,
+      "spa": 70,
+      "spd": 30,
+      "spe": 40
+    }
+  },
+  "Bergmite":
+  {
+    "type": [
+      "Ice"
+    ],
+    "base_stats": {
+      "hp": 56,
+      "atk": 69,
+      "def": 86,
+      "spa": 32,
+      "spd": 36,
+      "spe": 28
+    }
+  },
+  "Bibarel":
+  {
+    "type": [
+      "Normal",
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 79,
+      "atk": 85,
+      "def": 60,
+      "spa": 55,
+      "spd": 60,
+      "spe": 71
+    }
+  },
+  "Bidoof":
+  {
+    "type": [
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 59,
+      "atk": 45,
+      "def": 40,
+      "spa": 35,
+      "spd": 40,
+      "spe": 31
+    }
+  },
+  "Binacle":
+  {
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 42,
+      "atk": 52,
+      "def": 67,
+      "spa": 39,
+      "spd": 56,
+      "spe": 50
+    }
+  },
+  "Bisharp":
+  {
+    "type": [
+      "Dark",
+      "Steel"
+    ],
+    "base_stats": {
+      "hp": 65,
+      "atk": 125,
+      "def": 100,
+      "spa": 60,
+      "spd": 70,
+      "spe": 70
+    }
+  },
+  "Blastoise":
+  {
+    "type": [
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 79,
+      "atk": 83,
+      "def": 100,
+      "spa": 85,
+      "spd": 105,
+      "spe": 78
+    }
+  },
+  "Blaziken":
+  {
+    "type": [
+      "Fighting",
+      "Fire"
+    ],
+    "base_stats": {
+      "hp": 80,
+      "atk": 120,
+      "def": 70,
+      "spa": 110,
+      "spd": 70,
+      "spe": 80
+    }
+  },
+  "Blissey":
+  {
+    "type": [
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 255,
+      "atk": 10,
+      "def": 10,
+      "spa": 75,
+      "spd": 135,
+      "spe": 55
+    }
+  },
+  "Blitzle":
+  {
+    "type": [
+      "Electric"
+    ],
+    "base_stats": {
+      "hp": 45,
+      "atk": 60,
+      "def": 32,
+      "spa": 50,
+      "spd": 32,
+      "spe": 76
+    }
+  },
+  "Boldore":
+  {
+    "type": [
+      "Rock"
+    ],
+    "base_stats": {
+      "hp": 70,
+      "atk": 105,
+      "def": 105,
+      "spa": 50,
+      "spd": 40,
+      "spe": 20
+    }
+  },
+  "Bonsly":
+  {
+    "type": [
+      "Rock"
+    ],
+    "base_stats": {
+      "hp": 50,
+      "atk": 80,
+      "def": 95,
+      "spa": 10,
+      "spd": 45,
+      "spe": 10
+    }
+  },
+  "Bouffalant":
+  {
+    "type": [
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 95,
+      "atk": 110,
+      "def": 95,
+      "spa": 40,
+      "spd": 95,
+      "spe": 55
+    }
+  },
+  "Braixen":
+  {
+    "type": [
+      "Fire"
+    ],
+    "base_stats": {
+      "hp": 59,
+      "atk": 59,
+      "def": 58,
+      "spa": 90,
+      "spd": 70,
+      "spe": 73
+    }
+  },
+  "Braviary":
+  {
+    "type": [
+      "Flying",
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 100,
+      "atk": 123,
+      "def": 75,
+      "spa": 57,
+      "spd": 75,
+      "spe": 80
+    }
+  },
+  "Breloom":
+  {
+    "type": [
+      "Fighting",
+      "Grass"
+    ],
+    "base_stats": {
+      "hp": 60,
+      "atk": 130,
+      "def": 80,
+      "spa": 60,
+      "spd": 60,
+      "spe": 70
+    }
+  },
+  "Bronzong":
+  {
+    "type": [
+      "Psychic",
+      "Steel"
+    ],
+    "base_stats": {
+      "hp": 67,
+      "atk": 89,
+      "def": 116,
+      "spa": 79,
+      "spd": 116,
+      "spe": 33
+    }
+  },
+  "Bronzor":
+  {
+    "type": [
+      "Psychic",
+      "Steel"
+    ],
+    "base_stats": {
+      "hp": 57,
+      "atk": 24,
+      "def": 86,
+      "spa": 24,
+      "spd": 86,
+      "spe": 23
+    }
+  },
+  "Budew":
+  {
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "base_stats": {
+      "hp": 40,
+      "atk": 30,
+      "def": 35,
+      "spa": 50,
+      "spd": 70,
+      "spe": 55
+    }
+  },
+  "Buizel":
+  {
+    "type": [
+      "Water"
+    ],
+    "base_stats": {
+      "hp": 55,
+      "atk": 65,
+      "def": 35,
+      "spa": 60,
+      "spd": 30,
+      "spe": 85
+    }
+  },
+  "Bulbasaur":
+  {
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "base_stats": {
+      "hp": 45,
+      "atk": 49,
+      "def": 49,
+      "spa": 65,
+      "spd": 65,
+      "spe": 45
+    }
+  },
+  "Buneary":
+  {
+    "type": [
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 55,
+      "atk": 66,
+      "def": 44,
+      "spa": 44,
+      "spd": 56,
+      "spe": 85
+    }
+  },
+  "Bunnelby":
+  {
+    "type": [
+      "Normal"
+    ],
+    "base_stats": {
+      "hp": 38,
+      "atk": 36,
+      "def": 38,
+      "spa": 32,
+      "spd": 36,
+      "spe": 57
+    }
+  },
+  "Burmy":
+  {
+    "type": [
+      "Bug"
+    ],
+    "base_stats": {
+      "hp": 40,
+      "atk": 29,
+      "def": 45,
+      "spa": 29,
+      "spd": 45,
+      "spe": 36
+    }
+  },
+  "Butterfree":
+  {
+    "type": [
+      "Bug",
+      "Flying"
+    ],
+    "base_stats": {
+      "hp": 60,
+      "atk": 45,
+      "def": 50,
+      "spa": 90,
+      "spd": 80,
+      "spe": 70
+    }
   }
 }
