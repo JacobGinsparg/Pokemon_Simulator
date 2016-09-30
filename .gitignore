@@ -1,2 +1,7 @@
+# Python things
+**/__pycache__
+
+# My things
 data_brainstorming.txt
 TeamParser.py
+Data/*.json
