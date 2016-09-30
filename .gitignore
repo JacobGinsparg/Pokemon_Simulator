@@ -4,4 +4,4 @@
 # My things
 data_brainstorming.txt
 TeamParser.py
-Data/*.json
+pokemon/data/*.json
