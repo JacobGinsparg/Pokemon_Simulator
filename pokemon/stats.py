@@ -18,10 +18,7 @@ _stage_mods = {
 }
 
 class StatSet:
-    def __init__(self, name, nature, evs, ivs):
-        with open('data/pokemon.json') as file_data:
-            all_json = json.load(file_data)
-        stats = all_json[name.lower()][base_stats]
+    def __init__(self, stats, nature, evs, ivs):
         self.hp = HPStat(stats['hp'], evs['HP'], ivs['HP'])
         self.attack = Stat(stats['attack'], evs['Atk'], ivs['Atk'], nature.value[0])
         self.defense = Stat(stats['defense'], evs['Def'], ivs['Def'], nature.value[1])
