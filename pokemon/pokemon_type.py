@@ -44,8 +44,7 @@ class Type(Enum):
         return self.name.title()
 
     def advantage(self, types):
-        advantages = [_type_chart[self.value][Type[t].value] for t in set(types)]
-        x = 1
-        while advantages:
-            x *= advantages.pop()
-        return x
+        total_advantage = 1
+        for t in set(types):
+            total_advantage *= _type_chart[self.value][Type[t].value]
+        return total_advantage
