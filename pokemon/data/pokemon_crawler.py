@@ -40,25 +40,6 @@ def scrape_pokemon():
 
 # Moves
 
-    # nightmare
-    # trap
-    # infatuation
-    # confusion
-    # poison
-    # burn
-    # freeze
-    # sleep
-    # paralysis
-
-def create_physical_move(move_json):
-    return {}
-
-def create_special_move(move_json):
-    return {}
-
-def create_status_move(move_json):
-    return {}
-
 def request_next_move(move_id):
     return request_next(BASE_URL + 'move/' + str(move_id))
 
@@ -66,25 +47,17 @@ def scrape_moves():
     moves = {}
     for i in range(1, LAST_MOVE_NUM + 1):
         move_json = request_next_move(i)
-        damage_class = move_json['damage_class']['name']
-        if damage_class is 'physical':
-            moves[move_json['name']] = create_physical_move(move_json)
-        elif damage_class is 'special':
-            moves[move_json['name']] = create_special_move(move_json)
-        elif damage_class is 'status':
-            moves[move_json['name']] = create_status_move(move_json)
-        else:
-            raise RuntimeError('Not a physical, special, or status move')
-        # moves[move_json['name']] = {
-        #     'accuracy': move_json['accuracy'],
-        #     'effect_chance': move_json['effect_chance'],
-        #     'effect': determine_effect(ailments, move_json['name']),
-        #     'power': move_json['power'],
-        #     'pp': move_json['pp'],
-        #     'priority': move_json['priority'],
-        #     'damage_class': move_json['damage_class']['name'],
-        #     'type': move_json['type']['name'],
-        # }
+        moves[move_json['name']] = {
+            'accuracy': move_json['accuracy'],
+            'effect_chance': move_json['effect_chance'],
+            'pp': move_json['pp'],
+            'priority': move_json['priority'],
+            'power': move_json['power'],
+            'damage_class': move_json['damage_class']['name'],
+            'meta': move_json['meta'],
+            'stat_changes': move_json['stat_changes'],
+            'type': move_json['type']['name']
+        }
     output_json = json.dumps(moves, sort_keys=True, indent=4)
     print(output_json)
 
