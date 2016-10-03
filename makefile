@@ -4,5 +4,5 @@ run-python:
 	$(GOOD_PY)
 
 data:
-	rm ./data/*.json
-	$(GOOD_PY) ./data/pokemon_crawler.py
+	@rm -f ./pokemon/data/*.json
+	@$(GOOD_PY) ./pokemon/data/pokemon_crawler.py

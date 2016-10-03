@@ -35,8 +35,11 @@ def scrape_pokemon():
             'type': [t['type']['name'] for t in poke_json['types']],
             'base_stats': {s['stat']['name']: s['base_stat'] for s in poke_json['stats'] }
         }
+        sys.stdout.write('Pokemon: {}/{}\r'.format(i, LAST_POKEMON_NUM))
+    print('Finished scraping Pokemon')
     output_json = json.dumps(pokemon, sort_keys=True, indent=4)
-    print(output_json)
+    pokemon_file = open('./pokemon/data/pokemon.json', 'w')
+    pokemon_file.write(output_json)
 
 # Moves
 
@@ -58,13 +61,14 @@ def scrape_moves():
             'stat_changes': move_json['stat_changes'],
             'type': move_json['type']['name']
         }
+        sys.stdout.write('Moves: {}/{}\r'.format(i, LAST_MOVE_NUM))
+    print('Finished scraping moves')
     output_json = json.dumps(moves, sort_keys=True, indent=4)
-    print(output_json)
+    move_file = open('./pokemon/data/moves.json', 'w')
+    move_file.write(output_json)
 
 # CONTROL FLOW
 
 if __name__ == '__main__':
-    sys.stdout = open('pokemon.json', 'w')
     scrape_pokemon()
-    sys.stdout = open('moves.json', 'w')
     scrape_moves()
