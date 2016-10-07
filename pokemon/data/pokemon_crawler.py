@@ -48,9 +48,12 @@ def request_next_move(move_id):
 
 def scrape_moves():
     moves = {}
+    unique_moves = {}
     for i in range(1, LAST_MOVE_NUM + 1):
         move_json = request_next_move(i)
-        moves[move_json['name']] = {
+        if not move_json['meta']:
+            continue
+        move = {
             'accuracy': move_json['accuracy'],
             'effect_chance': move_json['effect_chance'],
             'pp': move_json['pp'],
@@ -61,11 +64,18 @@ def scrape_moves():
             'stat_changes': move_json['stat_changes'],
             'type': move_json['type']['name']
         }
+        if move['meta']['category']['name'] == 'unique':
+            unique_moves[move_json['name']] = move
+        else:
+            moves[move_json['name']] = move
         sys.stdout.write('Moves: {}/{}\r'.format(i, LAST_MOVE_NUM))
     print('Finished scraping moves')
     output_json = json.dumps(moves, sort_keys=True, indent=4)
+    unique_json = json.dumps(unique_moves, sort_keys=True, indent=4)
     move_file = open('./pokemon/data/moves.json', 'w')
+    unique_file = open('./pokemon/data/unique_moves.json', 'w')
     move_file.write(output_json)
+    unique_file.write(unique_json)
 
 # CONTROL FLOW
 
