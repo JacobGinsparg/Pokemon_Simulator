@@ -8,9 +8,11 @@ from urllib import request
 
 # GLOBALS AND CONSTANTS
 
-LAST_POKEMON_NUM = 721
-LAST_ABILITY_NUM = 191
-LAST_MOVE_NUM = 621
+LAST_POKEMON_NUM  = 721
+FIRST_SPECIAL_NUM = 10001
+LAST_SPECIAL_NUM  = 10090
+LAST_ABILITY_NUM  = 191
+LAST_MOVE_NUM     = 621
 BASE_URL = 'http://pokeapi.co/api/v2/'
 HEADERS = {'User-Agent':'Magic Browser'}
 
@@ -36,7 +38,15 @@ def scrape_pokemon():
             'base_stats': {s['stat']['name']: s['base_stat'] for s in poke_json['stats'] }
         }
         sys.stdout.write('Pokemon: {}/{}\r'.format(i, LAST_POKEMON_NUM))
-    print('Finished scraping Pokemon')
+    print('Finished scraping Pokemon\n')
+    for i in range(FIRST_SPECIAL_NUM, LAST_SPECIAL_NUM + 1):
+        poke_json = request_next_pokemon(i)
+        pokemon[poke_json['name']] = {
+            'type': [t['type']['name'] for t in poke_json['types']],
+            'base_stats': {s['stat']['name']: s['base_stat'] for s in poke_json['stats'] }
+        }
+        sys.stdout.write('Special: {}/{}\r'.format(i, LAST_SPECIAL_NUM))
+    print('Finished scraping special Pokemon')
     output_json = json.dumps(pokemon, sort_keys=True, indent=4)
     pokemon_file = open('./pokemon/data/pokemon.json', 'w')
     pokemon_file.write(output_json)
