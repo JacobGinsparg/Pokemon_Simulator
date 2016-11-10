@@ -3,8 +3,10 @@
 [Pokémon Simulator GitHub repository](https://github.com/JacobGinsparg/Pokemon_Simulator)
 
 This is an ongoing project with two main goals:
+
 1. To create a working simulator for 1v1 Pokémon battles.
-2. To use the simulator to explore applications of game theory to Pokémon.
+
+2. To use the simulator to explore applications of game theory to Pokémon:
   * Filling out teams to counter different metagames.
   * Considering mathematically correct moves mid-battle.
   * Adjusting strategies as Pokémon are knocked out.
