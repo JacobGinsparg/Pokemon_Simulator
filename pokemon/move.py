@@ -1,12 +1,6 @@
 import json
 from pokemon_type import Type
 
-MOVE_CLASSES = {
-    'physical': Physical,
-    'special' : Special,
-    'status'  : Status
-}
-
 UNIQUE_MOVES = {
     "acupressure": None,
     "after-you": None,
@@ -100,7 +94,76 @@ UNIQUE_MOVES = {
     "worry-seed": None
 }
 
-def get_move_data(name):
+def _create_effect(move_data):
+    category = move_data['meta']['category']['name']
+    if category is 'net-good-stats':
+        return _create_net_good_stats(move_data)
+    elif category is 'damage':
+        return _create_damage(move_data)
+    elif category is 'damage+lower':
+        return _create_damage_lower(move_data)
+    elif category is 'damage+ailment':
+        return _create_damage_ailment(move_data)
+    elif category is 'ailment':
+        return _create_ailment(move_data)
+    elif category is 'unique':
+        pass
+    elif category is 'whole-field-effect':
+        return _create_whole_field(move_data)
+    elif category is 'damage+heal':
+        return _create_damage_heal(move_data)
+    elif category is 'heal':
+        return _create_heal(move_data)
+    elif category is 'field-effect':
+        return _create_field_effect(move_data)
+    elif category is 'ohko':
+        return _create_ohko(move_data)
+    elif category is 'force-switch':
+        return _create_force_switch(move_data)
+    elif category is 'swagger':
+        return _create_swagger(move_data)
+    else:
+        #error here
+        pass
+
+def _create_net_good_stats(move_data):
+    pass
+
+def _create_damage(move_data):
+    pass
+
+def _create_damage_lower(move_data):
+    pass
+
+def _create_damage_ailment(move_data):
+    pass
+
+def _create_ailment(move_data):
+    pass
+
+def _create_whole_field(move_data):
+    pass
+
+def _create_damage_heal(move_data):
+    pass
+
+def _create_heal(move_data):
+    pass
+
+def _create_field_effect(move_data):
+    pass
+
+def _create_ohko(move_data):
+    pass
+
+def _create_force_switch(move_data):
+    pass
+
+def _create_swagger(move_data):
+    pass
+
+
+def _get_move_data(name):
     with open('data/moves.json') as file_data:
         all_json = json.load(file_data)
     formatted_name = name.lower().replace(' ','-')
@@ -116,5 +179,7 @@ class MoveSet:
 
 class Move:
     def __init__(self, name):
-        move_data = get_move_data(name)
+        move_data = _get_move_data(name)
         self.name = name
+        self.type = Type[move_data['type']]
+        self.effect = _create_effect(move_data)
