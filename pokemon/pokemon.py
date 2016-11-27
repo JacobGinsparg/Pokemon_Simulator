@@ -1,0 +1,39 @@
+import json
+from move import MoveSet
+from nature import Nature
+from pokemon_type import Type
+from stats import StatSet
+
+def _normalize_value_dict(v_dict, base):
+    normalized_values = {}
+    for stat in ['HP', 'ATK', 'DEF', 'SPE', 'SPA', 'SPD']:
+        if stat not in v_dict:
+            normalized_values[stat] = base
+        else:
+            normalized_values[stat] = v_dict[stat]
+    return normalized_values
+
+def _normalize_evs(ev_dict):
+    return _normalize_value_dict(ev_dict, 0)
+
+def _normalize_ivs(iv_dict):
+    return _normalize_value_dict(iv_dict, 31)
+
+def get_pokemon_from_json(name):
+    with open('data/pokemon.json') as file_data:
+        all_json = json.load(file_data)
+    return all_json[name.lower()]
+
+class Pokemon:
+    def __init__(self, name, nickname, nature, item, ability, move_list, ev_dict, iv_dict):
+        evs = _normalize_evs(ev_dict)
+        ivs = _normalize_ivs(iv_dict)
+        poke_json = get_pokemon_from_json(name)
+        self.name = name
+        self.nickname = nickname
+        self.nature = Nature[nature]
+        self.type = [Type[t] for t in poke_json['type']]
+        self.item = None
+        self.ability = None
+        self.moveset = MoveSet(move_list)
+        self.stats = StatSet(poke_json['base_stats'], self.nature, evs, ivs)
