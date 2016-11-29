@@ -1,4 +1,5 @@
 import json
+from game import Game
 from pokemon_type import Type
 from webster import Webster
 
@@ -108,7 +109,7 @@ def _create_effect(move_data):
     elif category is 'ailment':
         return _create_ailment(move_data)
     elif category is 'unique':
-        pass
+        return UNIQUE_MOVES[move_data['name']]
     elif category is 'whole-field-effect':
         return _create_whole_field(move_data)
     elif category is 'damage+heal':

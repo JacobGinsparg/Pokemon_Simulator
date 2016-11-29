@@ -1,4 +1,6 @@
 import json
+import uuid
+
 from move import MoveSet
 from nature import Nature
 from pokemon_type import Type
@@ -24,6 +26,7 @@ class Pokemon:
         evs = _normalize_evs(ev_dict)
         ivs = _normalize_ivs(iv_dict)
         poke_json = Webster.request_pokemon(name)
+        self.id = str(uuid.uuid4())
         self.name = name
         self.nickname = nickname
         self.nature = Nature[nature]
