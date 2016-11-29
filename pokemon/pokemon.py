@@ -19,16 +19,11 @@ def _normalize_evs(ev_dict):
 def _normalize_ivs(iv_dict):
     return _normalize_value_dict(iv_dict, 31)
 
-def get_pokemon_from_json(name):
-    with open('data/pokemon.json') as file_data:
-        all_json = json.load(file_data)
-    return all_json[name.lower()]
-
 class Pokemon:
     def __init__(self, name, nickname, nature, item, ability, move_list, ev_dict, iv_dict):
         evs = _normalize_evs(ev_dict)
         ivs = _normalize_ivs(iv_dict)
-        poke_json = get_pokemon_from_json(name)
+        poke_json = Webster.request_pokemon(name)
         self.name = name
         self.nickname = nickname
         self.nature = Nature[nature]

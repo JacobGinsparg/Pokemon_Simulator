@@ -1,5 +1,6 @@
 import json
 from pokemon_type import Type
+from webster import Webster
 
 UNIQUE_MOVES = {
     "acupressure": None,
@@ -162,13 +163,6 @@ def _create_force_switch(move_data):
 def _create_swagger(move_data):
     pass
 
-
-def _get_move_data(name):
-    with open('data/moves.json') as file_data:
-        all_json = json.load(file_data)
-    formatted_name = name.lower().replace(' ','-')
-    return all_json[formatted_name]
-
 class MoveSet:
     def __init__(self, move_list):
         self.move1 = Move(move_list[0])
@@ -179,7 +173,7 @@ class MoveSet:
 
 class Move:
     def __init__(self, name):
-        move_data = _get_move_data(name)
+        move_data = Webster.request_move(name)
         self.name = name
         self.type = Type[move_data['type']]
         self.effect = _create_effect(move_data)
