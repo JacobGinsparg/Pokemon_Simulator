@@ -96,85 +96,66 @@ UNIQUE_MOVES = {
     "worry-seed": None
 }
 
-def _create_effect(move_data):
-    category = move_data['meta']['category']['name']
-    if category is 'net-good-stats':
-        return _create_net_good_stats(move_data)
-    elif category is 'damage':
-        return _create_damage(move_data)
-    elif category is 'damage+lower':
-        return _create_damage_lower(move_data)
-    elif category is 'damage+ailment':
-        return _create_damage_ailment(move_data)
-    elif category is 'ailment':
-        return _create_ailment(move_data)
-    elif category is 'unique':
-        return UNIQUE_MOVES[move_data['name']]
-    elif category is 'whole-field-effect':
-        return _create_whole_field(move_data)
-    elif category is 'damage+heal':
-        return _create_damage_heal(move_data)
-    elif category is 'heal':
-        return _create_heal(move_data)
-    elif category is 'field-effect':
-        return _create_field_effect(move_data)
-    elif category is 'ohko':
-        return _create_ohko(move_data)
-    elif category is 'force-switch':
-        return _create_force_switch(move_data)
-    elif category is 'swagger':
-        return _create_swagger(move_data)
+EFFECTS = {
+    "net-good-stats": None
+    "damage": None
+    "damage+lower": None
+    "damage+ailment": None
+    "ailment": None
+    "unique": None
+    "whole-field-effect": None
+    "damage+heal": None
+    "damage+raise": None
+    "heal": None
+    "field-effect": None
+    "ohko": None
+    "force-switch": None
+    "swagger": None
+}
+
+def _find_target_id(game, target, poke_id):
+    team_id = poke_id[:len(poke_id)/2]
+    if target in ['specific-move', 'selected-pokemon-me-first', 'ally']:
+        return None # these are uncommon
+    elif target in ['users-field', 'user-and-allies']:
+        return team_id
+    elif target in ['user-or-ally','user']:
+        return poke_id
+    elif target is 'opponents-field':
+        return game.get_opponent(team_id)
+    elif target in ['random-opponent', 'all-other-pokemon', 'selected-pokemon', 'all-opponents']:
+        return game.get_opponent_active_pokemon(team_id)
+    elif target is 'entire-field':
+        return game.game_id
+    elif target is 'all-pokemon':
+        return [poke_id, game.get_opponent_active_pokemon(team_id)]
     else:
-        #error here
-        pass
-
-def _create_net_good_stats(move_data):
-    pass
-
-def _create_damage(move_data):
-    pass
-
-def _create_damage_lower(move_data):
-    pass
-
-def _create_damage_ailment(move_data):
-    pass
-
-def _create_ailment(move_data):
-    pass
-
-def _create_whole_field(move_data):
-    pass
-
-def _create_damage_heal(move_data):
-    pass
-
-def _create_heal(move_data):
-    pass
-
-def _create_field_effect(move_data):
-    pass
-
-def _create_ohko(move_data):
-    pass
-
-def _create_force_switch(move_data):
-    pass
-
-def _create_swagger(move_data):
-    pass
+        raise Exception('Invalid target')
 
 class MoveSet:
-    def __init__(self, move_list):
-        self.move1 = Move(move_list[0])
-        self.move2 = Move(move_list[1])
-        self.move3 = Move(move_list[2])
-        self.move4 = Move(move_list[3])
-        self.struggle = Move('struggle')
+    def __init__(self, poke_id, move_list):
+        self.move1 = Move(poke_id, move_list[0])
+        self.move2 = Move(poke_id, move_list[1])
+        self.move3 = Move(poke_id, move_list[2])
+        self.move4 = Move(poke_id, move_list[3])
+        self.struggle = Move(poke_id, 'struggle')
 
 class Move:
-    def __init__(self, name):
+    def __init__(self, poke_id, name):
         move_data = Webster.request_move(name)
         self.name = name
+        self.accuracy = move_data['accuracy']
+        self.damage_class = move_data['damage_class']
+        self.effect_chance = move_data['effect_chance']
+        self.meta = move_data['meta']
+        self.power = move_data['power']
+        self.pp = move_data['pp']
+        self.priority = move_data['priority']
+        self.stat_changes = move_data['stat_changes']
+        self.target = move_data['target']
         self.type = Type[move_data['type']]
-        self.effect = _create_effect(move_data)
+
+    def use(self, game, poke_id):
+        target_id = _find_target_id(game, self.target, poke_id)
+        effect = EFFECTS[self.meta['category']['name']]
+        effect(game, target_id)
