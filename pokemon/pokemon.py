@@ -38,3 +38,9 @@ class Pokemon:
 
     def get_team_id(self):
         return self.id[:len(self.id)/2]
+
+    def take_damage(self, amount):
+        self.stats['hp'].take_damage(amount)
+
+    def heal(self, amount):
+        self.stats['hp'].heal(amount)

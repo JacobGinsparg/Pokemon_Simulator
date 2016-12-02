@@ -1,7 +1,16 @@
 import json
+import random
+import math
 from game import Game
 from pokemon_type import Type
 from webster import Webster
+
+CRIT_RATES = {
+    0: 1/16,
+    1: 1/8,
+    2: 1/2,
+    3: 1
+}
 
 UNIQUE_MOVES = {
     "acupressure": None,
@@ -97,21 +106,53 @@ UNIQUE_MOVES = {
 }
 
 EFFECTS = {
-    "net-good-stats": None
-    "damage": None
-    "damage+lower": None
-    "damage+ailment": None
-    "ailment": None
-    "unique": None
-    "whole-field-effect": None
-    "damage+heal": None
-    "damage+raise": None
-    "heal": None
-    "field-effect": None
-    "ohko": None
-    "force-switch": None
-    "swagger": None
+    "net-good-stats": _net_good_stats,
+    "damage": _damage,
+    "damage+lower": _damage_lower,
+    "damage+ailment": _damage_ailment,
+    "ailment": _ailment,
+    "unique": None,
+    "whole-field-effect": _whole_field,
+    "damage+heal": _damage_heal,
+    "damage+raise": _damage_raise,
+    "heal": _heal,
+    "field-effect": _field,
+    "ohko": _ohko,
+    "force-switch": _switch,
+    "swagger": _swagger
 }
+
+def _net_good_stats(game, target, move):
+    team = target[:len(target)/2]
+    for change in move.stat_changes:
+        stat = change['stat']['name']
+        levels = change['change']
+        if levels > 0:
+            game.players[team][target].stats[stat].raise_stage_by(levels)
+        else:
+            game.players[team][target].stats[stat].lower_stage_by(levels)
+
+def _calculate_damage(move, attacker, defender, field_crit):
+    # Levels are assumed to be 100 and thus omitted
+    attack = attacker.stats['attack'] if move.damage_class is 'physical' else attacker.stats['special-attack']
+    defense = defender.stats['defense'] if move.damage_class is 'physical' else defender.stats['special-defense']
+    stab = 1.5 if move.type in attacker.type else 1
+    type_adv = move.type.advantage(defender.type)
+    crit_level = min(3, field_crit + move.meta['crit_rate'])
+    crit_rate = CRIT_RATES[crit_level]
+    crit = 1.5 if random.randrange(0,100,1)/100 < crit_rate else 1
+    other = 1 # items, abilities, field effects
+    rand = random.randrange(85, 100, 1)/100
+    mod = stab * type_adv * crit * other * rand
+    return math.floor((210/250 * attack/defense * move.power + 2) * mod)
+
+def _damage(game, target, move):
+    team = target.get_team_id()
+    attacker = game.get_opponent_active_pokemon(team)
+    defender = target
+    crit_level = game.players[team]['crit_level']
+    damage = _calculate_damage(move, attacker, defender, crit_level)
+    game.players[team][target].take_damage(damage)
 
 def _find_target_id(game, target, poke_id):
     team_id = poke_id[:len(poke_id)/2]
@@ -158,4 +199,4 @@ class Move:
     def use(self, game, poke_id):
         target_id = _find_target_id(game, self.target, poke_id)
         effect = EFFECTS[self.meta['category']['name']]
-        effect(game, target_id)
+        effect(game, target_id, self)
