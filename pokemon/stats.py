@@ -66,7 +66,15 @@ class HPStat(Stat):
         self.base = base
         self.ev = ev
         self.iv = iv
+        # Level is assumed to be 100 and is thus omitted
+        self.max = math.floor((2 * self.base) + self.iv + (self.ev / 4) + 110)
+        self.current = self.max
 
     def __call__(self):
-        # Level is assumed to be 100 and is thus omitted
-        return math.floor((2 * self.base) + self.iv + (self.ev / 4) + 110)
+        return self.current
+
+    def take_damage(self, amount):
+        self.current = max(0, self.current - amount)
+
+    def heal(self, amount):
+        self.current = min(self.max, self.current + amount)
