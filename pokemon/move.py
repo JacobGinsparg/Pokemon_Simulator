@@ -106,31 +106,21 @@ UNIQUE_MOVES = {
 }
 
 EFFECTS = {
-    "net-good-stats": _net_good_stats,
-    "damage": _damage,
-    "damage+lower": _damage_lower,
-    "damage+ailment": _damage_ailment,
     "ailment": _ailment,
-    "unique": None,
-    "whole-field-effect": _whole_field,
+    "damage": _damage,
+    "damage+ailment": _damage_ailment,
     "damage+heal": _damage_heal,
+    "damage+lower": _damage_lower,
     "damage+raise": _damage_raise,
-    "heal": _heal,
     "field-effect": _field,
-    "ohko": _ohko,
     "force-switch": _switch,
-    "swagger": _swagger
+    "heal": _heal,
+    "net-good-stats": _net_good_stats,
+    "ohko": _ohko,
+    "unique": None,
+    "swagger": _swagger,
+    "whole-field-effect": _whole_field
 }
-
-def _net_good_stats(game, target, move):
-    team = target[:len(target)/2]
-    for change in move.stat_changes:
-        stat = change['stat']['name']
-        levels = change['change']
-        if levels > 0:
-            game.players[team][target].stats[stat].raise_stage_by(levels)
-        else:
-            game.players[team][target].stats[stat].lower_stage_by(levels)
 
 def _calculate_damage(move, attacker, defender, field_crit):
     # Levels are assumed to be 100 and thus omitted
@@ -142,7 +132,7 @@ def _calculate_damage(move, attacker, defender, field_crit):
     crit_rate = CRIT_RATES[crit_level]
     crit = 1.5 if random.randrange(0,100,1)/100 < crit_rate else 1
     other = 1 # items, abilities, field effects
-    rand = random.randrange(85, 100, 1)/100
+    rand = random.randrange(85,100,1)/100
     mod = stab * type_adv * crit * other * rand
     return math.floor((210/250 * attack/defense * move.power + 2) * mod)
 
@@ -152,7 +142,42 @@ def _damage(game, target, move):
     defender = target
     crit_level = game.players[team]['crit_level']
     damage = _calculate_damage(move, attacker, defender, crit_level)
-    game.players[team][target].take_damage(damage)
+    game.players[team][target.id].take_damage(damage)
+
+def _damage_ailment(game, target, move):
+    pass
+
+def _damage_heal(game, target, move):
+    team = target.get_team_id()
+    attacker = game.get_opponent_active_pokemon(team)
+    defender = target
+    crit_level = game.players[team]['crit_level']
+    damage = _calculate_damage(move, attacker, defender, crit_level)
+    drain = math.floor(damage * move.meta['drain']/100)
+    game.players[team][target.id].take_damage(damage)
+    game.players[team][attacker.id].heal(drain)
+
+def _damage_lower(game, target, move):
+    _damage(game, target, move)
+    if random.randrange(0,100,1) < move.effect_chance:
+        _net_good_stats(game, target, move)
+
+def _damage_raise(game, target, move):
+    _damage(game, target, move)
+    if random.randrange(0,100,1) < move.effect_chance:
+        team = target.id[:len(target.id)/2]
+        stat_target = game.get_opponent_active_pokemon(team)
+        _net_good_stats(game, stat_target, move)
+
+def _net_good_stats(game, target, move):
+    team = target.id[:len(target.id)/2]
+    for change in move.stat_changes:
+        stat = change['stat']['name']
+        levels = change['change']
+        if levels > 0:
+            game.players[team][target.id].stats[stat].raise_stage_by(levels)
+        else:
+            game.players[team][target.id].stats[stat].lower_stage_by(levels)
 
 def _find_target_id(game, target, poke_id):
     team_id = poke_id[:len(poke_id)/2]
@@ -161,7 +186,7 @@ def _find_target_id(game, target, poke_id):
     elif target in ['users-field', 'user-and-allies']:
         return team_id
     elif target in ['user-or-ally','user']:
-        return poke_id
+        return game.players[team_id][poke_id]
     elif target is 'opponents-field':
         return game.get_opponent(team_id)
     elif target in ['random-opponent', 'all-other-pokemon', 'selected-pokemon', 'all-opponents']:
@@ -169,7 +194,7 @@ def _find_target_id(game, target, poke_id):
     elif target is 'entire-field':
         return game.game_id
     elif target is 'all-pokemon':
-        return [poke_id, game.get_opponent_active_pokemon(team_id)]
+        return [game.players[team_id][poke_id], game.get_opponent_active_pokemon(team_id)]
     else:
         raise Exception('Invalid target')
 
