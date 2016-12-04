@@ -136,6 +136,9 @@ def _calculate_damage(move, attacker, defender, field_crit):
     mod = stab * type_adv * crit * other * rand
     return math.floor((210/250 * attack/defense * move.power + 2) * mod)
 
+def _ailment(game, target, move):
+    pass
+
 def _damage(game, target, move):
     team = target.get_team_id()
     attacker = game.get_opponent_active_pokemon(team)
@@ -169,6 +172,12 @@ def _damage_raise(game, target, move):
         stat_target = game.get_opponent_active_pokemon(team)
         _net_good_stats(game, stat_target, move)
 
+def _heal(game, target, move):
+    team = target.get_team_id()
+    max_hp = target.stats['hp'].max
+    heal_amount = math.floor(max_hp * move.meta['healing']/100)
+    game.players[team][target.id].heal(heal_amount)
+
 def _net_good_stats(game, target, move):
     team = target.id[:len(target.id)/2]
     for change in move.stat_changes:
@@ -178,6 +187,11 @@ def _net_good_stats(game, target, move):
             game.players[team][target.id].stats[stat].raise_stage_by(levels)
         else:
             game.players[team][target.id].stats[stat].lower_stage_by(levels)
+
+def _ohko(game, target, move):
+    team = target.get_team_id()
+    damage = target.stats['hp']()
+    game.players[team][target.id].take_damage(damage)
 
 def _find_target_id(game, target, poke_id):
     team_id = poke_id[:len(poke_id)/2]
