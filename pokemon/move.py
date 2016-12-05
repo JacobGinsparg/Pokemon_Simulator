@@ -137,7 +137,12 @@ def _calculate_damage(move, attacker, defender, field_crit):
     return math.floor((210/250 * attack/defense * move.power + 2) * mod)
 
 def _ailment(game, target, move):
-    pass
+    ailment = move.meta['ailment']['name']
+    min_turns = move.meta['min_turns'] or -1
+    max_turns = move.meta['max_turns'] or -1
+    turns = random.randint(min_turns, max_turns)
+    team = target.get_team_id()
+    game.players[team][target.id].inflict_ailment(ailment, turns)
 
 def _damage(game, target, move):
     team = target.get_team_id()
@@ -148,7 +153,9 @@ def _damage(game, target, move):
     game.players[team][target.id].take_damage(damage)
 
 def _damage_ailment(game, target, move):
-    pass
+    _damage(game, target, move)
+    if random.randrange(0,100,1) < move.meta['ailment_chance']:
+        _ailment(game, target, move)
 
 def _damage_heal(game, target, move):
     team = target.get_team_id()
@@ -195,7 +202,7 @@ def _ohko(game, target, move):
 
 def _find_target_id(game, target, poke_id):
     team_id = poke_id[:len(poke_id)/2]
-    if target in ['specific-move', 'selected-pokemon-me-first', 'ally']:
+    if target in ['specific-move', 'selected-pokemon-me-first', 'ally', 'all-pokemon']:
         return None # these are uncommon
     elif target in ['users-field', 'user-and-allies']:
         return team_id
@@ -207,8 +214,6 @@ def _find_target_id(game, target, poke_id):
         return game.get_opponent_active_pokemon(team_id)
     elif target is 'entire-field':
         return game.game_id
-    elif target is 'all-pokemon':
-        return [game.players[team_id][poke_id], game.get_opponent_active_pokemon(team_id)]
     else:
         raise Exception('Invalid target')
 

@@ -6,6 +6,30 @@ from nature import Nature
 from pokemon_type import Type
 from stats import StatSet
 
+HARD_AILMENTS = [
+    'poison',
+    'burn',
+    'freeze',
+    'sleep',
+    'paralysis'
+]
+
+SOFT_AILMENTS = [
+    'nightmare',
+    'trap',
+    'infatuation',
+    'confusion',
+    'torment',
+    'disable',
+    'yawn',
+    'heal-block',
+    'no-type-immunity',
+    'leech-seed',
+    'embargo',
+    'perish-song',
+    'ingrain'
+]
+
 def _normalize_value_dict(v_dict, base):
     normalized_values = {}
     for stat in ['HP', 'ATK', 'DEF', 'SPE', 'SPA', 'SPD']:
@@ -35,6 +59,10 @@ class Pokemon:
         self.ability = None
         self.moveset = MoveSet(self.id, move_list)
         self.stats = StatSet(poke_json['base_stats'], self.nature, evs, ivs)
+        self.ailments = {
+            'hard': None
+            'soft': []
+        }
 
     def get_team_id(self):
         return self.id[:len(self.id)/2]
@@ -44,3 +72,16 @@ class Pokemon:
 
     def heal(self, amount):
         self.stats['hp'].heal(amount)
+
+    def inflict_ailment(self, ailment, turns):
+        if ailment in HARD_AILMENTS and not self.is_afflicted_by(ailment):
+            self.ailments['hard']['name'] = ailment
+            self.ailments['hard']['turns'] = turns
+        elif ailment in SOFT_AILMENTS and not self.is_afflicted_by(ailment):
+            self.ailments['soft'].append({
+                'name': ailment,
+                'turns': turns
+            })
+
+    def is_afflicted_by(self, ailment):
+        return ailment in [a['name'] for a in self.ailments['soft']] + [self.ailments['hard']['name']]

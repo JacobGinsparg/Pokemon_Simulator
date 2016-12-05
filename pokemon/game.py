@@ -66,9 +66,9 @@ class Game:
     def announce_winner():
         pass
 
-    def get_opponent(team_id):
+    def get_opponent(self, team_id):
         return [i for i in list(self.players.keys()) if i is not team_id][0]
 
-    def get_opponent_active_pokemon(team_id):
+    def get_opponent_active_pokemon(self, team_id):
         opponent_id = self.get_opponent(team_id)
         return self.players[opponent_id][active_id]
