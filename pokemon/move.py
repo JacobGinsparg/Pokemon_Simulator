@@ -99,23 +99,6 @@ UNIQUE_MOVES = {
     "worry-seed": None
 }
 
-EFFECTS = {
-    "ailment": _ailment,
-    "damage": _damage,
-    "damage+ailment": _damage_ailment,
-    "damage+heal": _damage_heal,
-    "damage+lower": _damage_lower,
-    "damage+raise": _damage_raise,
-    "field-effect": _field,
-    "force-switch": _switch,
-    "heal": _heal,
-    "net-good-stats": _net_good_stats,
-    "ohko": _ohko,
-    "unique": None,
-    "swagger": _swagger,
-    "whole-field-effect": _whole_field
-}
-
 def _calculate_damage(move, attacker, defender, field_crit):
     # Levels are assumed to be 100 and thus omitted
     attack = attacker.stats['attack'] if move.damage_class is 'physical' else attacker.stats['special-attack']
@@ -210,6 +193,23 @@ def _find_target_id(game, target, poke_id):
         return game.game_id
     else:
         raise Exception('Invalid target')
+
+EFFECTS = {
+    "ailment": _ailment,
+    "damage": _damage,
+    "damage+ailment": _damage_ailment,
+    "damage+heal": _damage_heal,
+    "damage+lower": _damage_lower,
+    "damage+raise": _damage_raise,
+    "field-effect": _field,
+    "force-switch": _switch,
+    "heal": _heal,
+    "net-good-stats": _net_good_stats,
+    "ohko": _ohko,
+    "unique": None,
+    "swagger": _swagger,
+    "whole-field-effect": _whole_field
+}
 
 class MoveSet:
     def __init__(self, poke_id, move_list):

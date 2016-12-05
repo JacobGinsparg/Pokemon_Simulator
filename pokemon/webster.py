@@ -38,7 +38,7 @@ class Webster:
             'damage_class': move_json['damage_class']['name'],
             'meta': move_json['meta'],
             'stat_changes': move_json['stat_changes'],
-            'target': move_json['target']['name']
+            'target': move_json['target']['name'],
             'type': move_json['type']['name']
         }
         return move_dict
