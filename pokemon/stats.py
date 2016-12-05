@@ -1,22 +1,7 @@
 import json
 import math
+from pokemon.data import STAGE_MODS
 from pokemon.nature import Nature
-
-_stage_mods = {
-    -6: 2/8,
-    -5: 2/7,
-    -4: 2/6,
-    -3: 2/5,
-    -2: 2/4,
-    -1: 2/3,
-    0: 2/2,
-    1: 3/2,
-    2: 4/2,
-    3: 5/2,
-    4: 6/2,
-    5: 7/2,
-    6: 8/2
-}
 
 class StatSet:
     def __init__(self, stats, nature, evs, ivs):
@@ -53,7 +38,7 @@ class Stat:
 
     def __call__(self):
         # Level is assumed to be 100 and is thus omitted
-        return math.floor(((2 * self.base) + self.iv + (self.ev / 4) + 5) * self.nature_mod * _stage_mods[self.stage])
+        return math.floor(((2 * self.base) + self.iv + (self.ev / 4) + 5) * self.nature_mod * STAGE_MODS[self.stage])
 
     def raise_stage_by(self, num_stages):
         self.stage = min(self.stage + num_stages, 6)

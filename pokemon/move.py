@@ -1,16 +1,10 @@
 import json
 import random
 import math
-from game import Game
-from pokemon_type import Type
-from webster import Webster
-
-CRIT_RATES = {
-    0: 1/16,
-    1: 1/8,
-    2: 1/2,
-    3: 1
-}
+from pokemon.data import CRIT_RATES
+from pokemon.game import Game
+from pokemon.type import Type
+from pokemon.webster import Webster
 
 UNIQUE_MOVES = {
     "acupressure": None,
