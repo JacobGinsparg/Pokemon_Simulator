@@ -162,6 +162,12 @@ def _heal(game, target, move):
     heal_amount = math.floor(max_hp * move.meta['healing']/100)
     game.players[team][target.id].heal(heal_amount)
 
+def _field(game, target, move):
+    pass
+
+def _switch(game, target, move):
+    pass
+
 def _net_good_stats(game, target, move):
     team = target.id[:len(target.id)/2]
     for change in move.stat_changes:
@@ -176,6 +182,12 @@ def _ohko(game, target, move):
     team = target.get_team_id()
     damage = target.stats['hp']()
     game.players[team][target.id].take_damage(damage)
+
+def _swagger(game, target, move):
+    pass
+
+def _whole_field(game, target, move):
+    pass
 
 def _find_target_id(game, target, poke_id):
     team_id = poke_id[:len(poke_id)/2]
