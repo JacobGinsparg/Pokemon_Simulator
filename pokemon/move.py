@@ -196,7 +196,7 @@ def _find_target_id(game, target, poke_id):
     elif target in ['users-field', 'user-and-allies']:
         return team_id
     elif target in ['user-or-ally','user']:
-        return game.players[team_id][poke_id]
+        return game.players[team_id]['team'][poke_id]
     elif target is 'opponents-field':
         return game.get_opponent(team_id)
     elif target in ['random-opponent', 'all-other-pokemon', 'selected-pokemon', 'all-opponents']:
@@ -231,6 +231,13 @@ class MoveSet:
         self.move4 = Move(poke_id, move_list[3])
         self.struggle = Move(poke_id, 'struggle')
 
+    def get_move_names(self):
+        moves = [self.move1, self.move2, self.move3, self.move4]
+        moves = [m for m in moves if m.pp > 0]
+        if len(moves) is 0:
+            moves.append(self.struggle)
+        return [m.name for m in moves]
+
 class Move:
     def __init__(self, poke_id, name):
         move_data = Webster.request_move(name)
@@ -240,7 +247,8 @@ class Move:
         self.effect_chance = move_data['effect_chance']
         self.meta = move_data['meta']
         self.power = move_data['power']
-        self.pp = move_data['pp']
+        self.max_pp = move_data['pp']
+        self.pp = self.max_pp
         self.priority = move_data['priority']
         self.stat_changes = move_data['stat_changes']
         self.target = move_data['target']
