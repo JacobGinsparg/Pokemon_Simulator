@@ -42,28 +42,38 @@ class Game:
             self.perform_eot_actions()
         self.announce_winner()
 
-    def combatants_available():
+    def combatants_available(self):
+        both_teams_good = True
+        for team in [self.players[p_id] for p_id in self.players]:
+            team_has_available_pokemon = False
+            for poke in [team[poke_id] for poke_id in team]:
+                if not poke.is_afflicted_by('faint'):
+                    team_has_available_pokemon = True
+                    break
+            if not team_has_available_pokemon:
+                both_teams_good = False
+                break
+        return both_teams_good
+
+    def prompt_player_actions(self):
         pass
 
-    def prompt_player_actions():
+    def perform_bot_actions(self):
         pass
 
-    def perform_bot_actions():
+    def perform_pre_combat_actions(self):
         pass
 
-    def perform_pre_combat_actions():
+    def perform_player_actions(self):
         pass
 
-    def perform_player_actions():
+    def perform_post_combat_actions(self):
         pass
 
-    def perform_post_combat_actions():
+    def perform_eot_actions(self):
         pass
 
-    def perform_eot_actions():
-        pass
-
-    def announce_winner():
+    def announce_winner(self):
         pass
 
     def get_opponent(self, team_id):

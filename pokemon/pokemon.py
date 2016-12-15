@@ -45,14 +45,18 @@ class Pokemon:
 
     def take_damage(self, amount):
         self.stats['hp'].take_damage(amount)
+        if self.stats['hp']() is 0:
+            self.faint()
 
     def heal(self, amount):
         self.stats['hp'].heal(amount)
 
     def inflict_ailment(self, ailment, turns):
         if ailment in HARD_AILMENTS and not self.is_afflicted_by(ailment):
-            self.ailments['hard']['name'] = ailment
-            self.ailments['hard']['turns'] = turns
+            self.ailments['hard'] = {
+                'name': ailment,
+                'turns': turns
+            }
         elif ailment in SOFT_AILMENTS and not self.is_afflicted_by(ailment):
             self.ailments['soft'].append({
                 'name': ailment,
@@ -61,3 +65,9 @@ class Pokemon:
 
     def is_afflicted_by(self, ailment):
         return ailment in [a['name'] for a in self.ailments['soft']] + [self.ailments['hard']['name']]
+
+    def faint(self):
+        self.ailments['hard'] = {
+            'name': 'faint',
+            'turns': -1
+        }
