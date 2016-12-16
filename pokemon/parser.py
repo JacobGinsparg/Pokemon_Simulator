@@ -26,59 +26,67 @@ class Parser:
         name, nickname, nature, item, ability, move_list, ev_dict, iv_dict = None, None, None, None, None, [], {}, {}
         state = 'name' # Start by parsing the name
         for line in lines:
-            if state is 'name':
-                match_result = NAME_LINE.match(line)
-                if match_result is None:
-                    raise Exception('This Pokémon has no name')
-                results = match_result.groupdict()
-                name = results['name']
-                nickname = results['nickname']
-                item = results['item']
-                state = 'ability'
-            elif state is 'ability':
-                match_result = ABILITY_LINE.match(line)
-                if match_result is None:
-                    raise Exception('This Pokémon has no ability')
-                results = match_result.groupdict()
-                ability = results['ability']
-                state = 'evs'
-            elif state is 'evs':
-                match_result = EV_LINE.match(line)
-                if match_result is None:
+            line_not_parsed = True
+            while(line_not_parsed):
+                if state is 'name':
+                    match_result = NAME_LINE.match(line)
+                    if match_result is None:
+                        raise Exception('This Pokémon has no name')
+                    results = match_result.groupdict()
+                    name = results['name']
+                    nickname = results['nickname']
+                    item = results['item']
+                    state = 'ability'
+                    line_not_parsed = False
+                elif state is 'ability':
+                    match_result = ABILITY_LINE.match(line)
+                    if match_result is None:
+                        raise Exception('This Pokémon has no ability')
+                    results = match_result.groupdict()
+                    ability = results['ability']
+                    state = 'evs'
+                    line_not_parsed = False
+                elif state is 'evs':
+                    match_result = EV_LINE.match(line)
+                    if match_result is None:
+                        state = 'nature'
+                        continue
+                        # Not raising exception because could
+                        # feasibly just not have EVs
+                        # raise Exception('This Pokémon has no EVs')
+                    results = EV_OR_IV.findall(line)
+                    for ev in results:
+                        ev_dict[ev[1]] = int(ev[0])
                     state = 'nature'
-                    pass
-                    # Not raising exception because could
-                    # feasibly just not have EVs
-                    # raise Exception('This Pokémon has no EVs')
-                results = EV_OR_IV.findall(line)
-                for ev in results:
-                    ev_dict[ev[1]] = int(ev[0])
-                state = 'nature'
-            elif state is 'nature':
-                match_result = NATURE_LINE.match(line)
-                if match_result is None:
-                    raise Exception('This Pokémon has no nature')
-                results = match_result.groupdict()
-                nature = results['nature']
-                state = 'ivs'
-            elif state is 'ivs':
-                match_result = IV_LINE.match(line)
-                if match_result is None:
+                    line_not_parsed = False
+                elif state is 'nature':
+                    match_result = NATURE_LINE.match(line)
+                    if match_result is None:
+                        raise Exception('This Pokémon has no nature')
+                    results = match_result.groupdict()
+                    nature = results['nature']
+                    state = 'ivs'
+                    line_not_parsed = False
+                elif state is 'ivs':
+                    match_result = IV_LINE.match(line)
+                    if match_result is None:
+                        state = 'moves'
+                        continue
+                        # Not raising exception because could
+                        # feasibly just not have IVs
+                        # raise Exception('This Pokémon has no IVs')
+                    results = EV_OR_IV.findall(line)
+                    for iv in results:
+                        iv_dict[iv[1]] = int(iv[0])
                     state = 'moves'
-                    pass
-                    # Not raising exception because could
-                    # feasibly just not have IVs
-                    # raise Exception('This Pokémon has no IVs')
-                results = EV_OR_IV.findall(line)
-                for iv in results:
-                    iv_dict[iv[1]] = int(iv[0])
-                state = 'moves'
-            elif state is 'moves':
-                match_result = MOVE_LINE.match(line)
-                if match_result is None:
-                    raise Exception('This Pokémon has no moves')
-                results = match_result.groupdict()
-                move_list.append(results['move'])
-            else:
-                raise Exception('Invalid parse state')
+                    line_not_parsed = False
+                elif state is 'moves':
+                    match_result = MOVE_LINE.match(line)
+                    if match_result is None:
+                        raise Exception('This Pokémon has no moves')
+                    results = match_result.groupdict()
+                    move_list.append(results['move'])
+                    line_not_parsed = False
+                else:
+                    raise Exception('Invalid parse state')
         return Pokemon(player_id, name, nickname, nature, item, ability, move_list, ev_dict, iv_dict)

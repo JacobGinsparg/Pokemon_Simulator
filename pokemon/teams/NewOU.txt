@@ -43,7 +43,7 @@ Bold Nature
 IVs: 0 Atk / 30 SpA / 30 Spe
 - Spore
 - Giga Drain
-- Hidden Power [Fire]
+- Hidden Power
 - Stun Spore
 
 Starmie @ Leftovers
