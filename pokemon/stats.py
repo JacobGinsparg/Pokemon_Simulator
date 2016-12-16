@@ -6,11 +6,11 @@ from pokemon.nature import Nature
 class StatSet:
     def __init__(self, stats, nature, evs, ivs):
         self.hp = HPStat(stats['hp'], evs['HP'], ivs['HP'])
-        self.attack = Stat(stats['attack'], evs['Atk'], ivs['Atk'], nature.attack())
-        self.defense = Stat(stats['defense'], evs['Def'], ivs['Def'], nature.defense())
-        self.speed = Stat(stats['speed'], evs['Spe'], ivs['Spe'], nature.speed())
-        self.sp_attack = Stat(stats['special-attack'], evs['SpA'], ivs['SpA'], nature.sp_attack())
-        self.sp_defense = Stat(stats['special-defense'], evs['SpD'], ivs['SpD'], nature.sp_defense())
+        self.attack = Stat(stats['attack'], evs['ATK'], ivs['ATK'], nature.attack())
+        self.defense = Stat(stats['defense'], evs['DEF'], ivs['DEF'], nature.defense())
+        self.speed = Stat(stats['speed'], evs['SPE'], ivs['SPE'], nature.speed())
+        self.sp_attack = Stat(stats['special-attack'], evs['SPA'], ivs['SPA'], nature.sp_attack())
+        self.sp_defense = Stat(stats['special-defense'], evs['SPD'], ivs['SPD'], nature.sp_defense())
 
     def __getitem__(self, key):
         if key is 'hp':

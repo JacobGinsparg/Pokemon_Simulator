@@ -130,7 +130,7 @@ class Game:
 
     def get_player_active_pokemon(self, team_id):
         active_id = self.players[team_id]['active_id']
-        return self.players[team_id]['team'][active_id
+        return self.players[team_id]['team'][active_id]
 
     def get_player_available_pokemon(self, team_id):
         team = self.players['team_id']['team']

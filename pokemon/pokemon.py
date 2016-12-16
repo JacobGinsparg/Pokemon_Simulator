@@ -3,8 +3,9 @@ import uuid
 from pokemon.data import HARD_AILMENTS, SOFT_AILMENTS
 from pokemon.move import MoveSet
 from pokemon.nature import Nature
-from pokemon.type import Type
 from pokemon.stats import StatSet
+from pokemon.type import Type
+from pokemon.webster import Webster
 
 def _normalize_value_dict(v_dict, base):
     normalized_values = {}
