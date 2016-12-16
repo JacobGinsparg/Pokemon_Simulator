@@ -1,7 +1,8 @@
 import re
-from pokemon.pokemon import Pokemon
+import pokemon.pokemon
 
-NAME_LINE = re.compile(r"^(?P<name>[^@\(\)]+)( \((?P<nickname>[^@]+)\))?( @ (?P<item>.+))?$")
+NAME_LINE = re.compile(r"^(?P<name>[^@\(\)]+)( @ (?P<item>.+))?$")
+NICKNAME_LINE = re.compile(r"^(?P<nickname>[^@\(\)]+)( \((?P<name>[^@]+)\))?( @ (?P<item>.+))?$")
 ABILITY_LINE = re.compile(r"Ability: (?P<ability>.+)$")
 EV_LINE = re.compile(r"EVs: [0-9]+ \S+( \/ [0-9]+ \S+)*$")
 EV_OR_IV = re.compile(r"(?P<value>[0-9]+) (?P<stat>[^/\s]+)")
@@ -14,6 +15,7 @@ class Parser:
     def parse_team(cls, player_id, path):
         team_file = open(path)
         team_text = team_file.read()
+        team_text = team_text.strip()
         team_split = [poke.split('\n') for poke in team_text.split('\n\n')]
         finished_team = {}
         for poke in team_split:
@@ -26,15 +28,17 @@ class Parser:
         name, nickname, nature, item, ability, move_list, ev_dict, iv_dict = None, None, None, None, None, [], {}, {}
         state = 'name' # Start by parsing the name
         for line in lines:
+            print(line)
             line_not_parsed = True
             while(line_not_parsed):
                 if state is 'name':
                     match_result = NAME_LINE.match(line)
+                    match_result = match_result or NICKNAME_LINE.match(line)
                     if match_result is None:
                         raise Exception('This Pokémon has no name')
                     results = match_result.groupdict()
                     name = results['name']
-                    nickname = results['nickname']
+                    nickname = results['nickname'] if 'nickname' in results else results['name']
                     item = results['item']
                     state = 'ability'
                     line_not_parsed = False
@@ -89,4 +93,4 @@ class Parser:
                     line_not_parsed = False
                 else:
                     raise Exception('Invalid parse state')
-        return Pokemon(player_id, name, nickname, nature, item, ability, move_list, ev_dict, iv_dict)
+        return pokemon.pokemon.Pokemon(player_id, name, nickname, nature, item, ability, move_list, ev_dict, iv_dict)

@@ -1,10 +1,10 @@
 import json
 import random
 import math
-from pokemon.data import CRIT_RATES
-from pokemon.game import Game
-from pokemon.type import Type
-from pokemon.webster import Webster
+import pokemon.data
+import  pokemon.game
+import pokemon.type
+import pokemon.webster
 
 UNIQUE_MOVES = {
     "acupressure": None,
@@ -106,7 +106,7 @@ def _calculate_damage(move, attacker, defender, field_crit):
     stab = 1.5 if move.type in attacker.type else 1
     type_adv = move.type.advantage(defender.type)
     crit_level = min(3, field_crit + move.meta['crit_rate'])
-    crit_rate = CRIT_RATES[crit_level]
+    crit_rate = pokemon.data.CRIT_RATES[crit_level]
     crit = 1.5 if random.randrange(0,100,1)/100 < crit_rate else 1
     other = 1 # items, abilities, field effects
     rand = random.randrange(85,100,1)/100
@@ -249,7 +249,7 @@ class MoveSet:
 
 class Move:
     def __init__(self, poke_id, name):
-        move_data = Webster.request_move(name)
+        move_data = pokemon.webster.Webster.request_move(name)
         self.name = name
         self.accuracy = move_data['accuracy']
         self.damage_class = move_data['damage_class']
@@ -261,7 +261,7 @@ class Move:
         self.priority = move_data['priority']
         self.stat_changes = move_data['stat_changes']
         self.target = move_data['target']
-        self.type = Type[move_data['type']]
+        self.type = pokemon.type.Type[move_data['type']]
 
     def use(self, game, poke_id):
         target_id = _find_target_id(game, self.target, poke_id)

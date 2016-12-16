@@ -1,7 +1,8 @@
 import uuid
+import pokemon.parser
 
 def _team_from_file_path(player_id, path):
-    team = Parser.parse_team(player_id, path)
+    team = pokemon.parser.Parser.parse_team(player_id, path)
     return {
         'team': team,
         'active_id': list(team)[0],
@@ -12,7 +13,7 @@ def _team_from_file_path(player_id, path):
 
 class Game:
     @classmethod
-    def createGame(cls, team_path_1, team_path_2):
+    def create_game(cls, team_path_1, team_path_2):
         game = cls()
         # Game state
         game.game_id = str(uuid.uuid4())
