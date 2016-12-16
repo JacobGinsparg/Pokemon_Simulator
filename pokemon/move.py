@@ -238,6 +238,15 @@ class MoveSet:
             moves.append(self.struggle)
         return [m.name for m in moves]
 
+    def get_move(self, name):
+        moves = [self.move1, self.move2, self.move3, self.move4]
+        moves = [m for m in moves if m.pp > 0]
+        if len(moves) is 0:
+            moves.append(self.struggle)
+        desired_move = [m for m in moves if m.name is name][0]
+        return desired_move
+
+
 class Move:
     def __init__(self, poke_id, name):
         move_data = Webster.request_move(name)

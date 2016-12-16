@@ -71,3 +71,9 @@ class Pokemon:
             'name': 'faint',
             'turns': -1
         }
+
+    def get_moves(self):
+        return self.moveset.get_move_names()
+
+    def get_move(self, name):
+        return self.moveset.get_move(name)

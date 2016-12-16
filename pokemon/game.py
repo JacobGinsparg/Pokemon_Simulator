@@ -66,27 +66,27 @@ class Game:
             player_actions.append(player_choice)
 
     def _print_player_choices(player):
-        available_pokemon = [team[poke] for poke in player['team']]
-        non_active_pokemon = [poke for poke in available_pokemon if poke.id is not player['active_id']]
-        active_pokemon = player['team'][player['active_id']]
-        moves = active_pokemon.moveset.get_move_names()
+        available = self.get_player_available_pokemon(player)
+        active = self.get_player_active_pokemon(player)
+        non_active = [poke for poke in available if poke.id is not active.id]
+        moves = active.get_moves()
         print('Choose from the following available actions.\nUse a move:')
         for move in moves:
             print(move)
-        if len(non_active_pokemon) > 0:
+        if len(non_active) > 0:
             print('Switch to a different Pokémon:')
-            for poke in non_active_pokemon:
+            for poke in non_active:
                 print(poke.name)
 
     def _get_choice(player, choice_string):
-        available_pokemon = [team[poke] for poke in player['team']]
-        non_active_pokemon = [poke for poke in available_pokemon if poke.id is not player['active_id']]
-        active_pokemon = player['team'][player['active_id']]
-        moves = active_pokemon.moveset.get_move_names()
-        if choice_string in non_active_pokemon: # Using a move
-            return ('move', choice_string)
+        available = self.get_player_available_pokemon(player)
+        active = self.get_player_active_pokemon(player)
+        non_active = [poke for poke in available if poke.id is not active.id]
+        moves = active.get_moves()
+        if choice_string in non_active: # Using a move
+            return ('move', active.id, choice_string)
         elif choice_string in moves: # Switching out
-            return ('switch', choice_string)
+            return ('switch', active.id, choice_string)
         else: # Not a valid move or pokemon
             return None
 
@@ -97,7 +97,19 @@ class Game:
         pass
 
     def perform_player_actions(self):
-        pass
+        for action in self.player_actions:
+            active_id = action[1]
+            team_id = active_id[:len(active_id)/2]
+            active = self.get_player_active_pokemon(team_id)
+            if action[0] is 'move':
+                move = active.get_move(action[2])
+                move.use(self, active_id)
+            elif action[0] is 'switch':
+                available = self.get_player_available_pokemon(team_id)
+                name = action[2]
+                self.players[team_id]['active_id'] = [p_id for p_id in available if available[p_id].name is name][0]
+            else:
+                raise Exception('Invalid player action')
 
     def perform_post_combat_actions(self):
         pass
@@ -113,4 +125,13 @@ class Game:
 
     def get_opponent_active_pokemon(self, team_id):
         opponent_id = self.get_opponent(team_id)
-        return self.players[opponent_id][active_id]
+        active_id = self.players[opponent_id]['active_id']
+        return self.players[opponent_id]['team'][active_id]
+
+    def get_player_active_pokemon(self, team_id):
+        active_id = self.players[team_id]['active_id']
+        return self.players[team_id]['team'][active_id
+
+    def get_player_available_pokemon(self, team_id):
+        team = self.players['team_id']['team']
+        return [team[poke] for poke in team]
