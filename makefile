@@ -7,3 +7,6 @@ cs4850:
 
 run-python:
 	@$(GOOD_PY)
+
+clean:
+	@rm -r **/__pycache__
