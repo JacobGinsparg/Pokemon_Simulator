@@ -267,3 +267,4 @@ class Move:
         target_id = _find_target_id(game, self.target, poke_id)
         effect = EFFECTS[self.meta['category']['name']]
         effect(game, target_id, self)
+        self.pp = max(0, self.pp - 1)

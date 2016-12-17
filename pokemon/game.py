@@ -91,7 +91,9 @@ class Game:
             return None
 
     def perform_bot_actions(self):
-        pass
+        for player in self.players:
+            active = self.get_player_active_pokemon(player)
+            print('Current active Pokémon is: ' + active.name + ' with ' + str(active.stats['hp']()) + ' HP.')
 
     def perform_pre_combat_actions(self):
         pass
