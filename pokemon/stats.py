@@ -13,17 +13,17 @@ class StatSet:
         self.sp_defense = Stat(stats['special-defense'], evs['SPD'], ivs['SPD'], nature.sp_defense())
 
     def __getitem__(self, key):
-        if key is 'hp':
+        if key == 'hp':
             return self.hp
-        elif key is 'attack':
+        elif key == 'attack':
             return self.attack
-        elif key is 'defense':
+        elif key == 'defense':
             return self.defense
-        elif key is 'speed':
+        elif key == 'speed':
             return self.speed
-        elif key is 'special-attack':
+        elif key == 'special-attack':
             return self.sp_attack
-        elif key is 'special-defense':
+        elif key == 'special-defense':
             return self.sp_defense
         else:
             raise Exception('Invalid stat')

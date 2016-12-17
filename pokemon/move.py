@@ -111,7 +111,7 @@ def _calculate_damage(move, attacker, defender, field_crit):
     other = 1 # items, abilities, field effects
     rand = random.randrange(85,100,1)/100
     mod = stab * type_adv * crit * other * rand
-    return math.floor((210/250 * attack/defense * move.power + 2) * mod)
+    return math.floor((210/250 * attack()/defense() * move.power + 2) * mod)
 
 def _ailment(game, target, move):
     ailment = move.meta['ailment']['name']
@@ -119,7 +119,7 @@ def _ailment(game, target, move):
     max_turns = move.meta['max_turns'] or -1
     turns = random.randint(min_turns, max_turns)
     team = target.get_team_id()
-    game.players[team][target.id].inflict_ailment(ailment, turns)
+    game.players[team]['team'][target.id].inflict_ailment(ailment, turns)
 
 def _damage(game, target, move):
     team = target.get_team_id()
@@ -127,7 +127,7 @@ def _damage(game, target, move):
     defender = target
     crit_level = game.players[team]['crit_level']
     damage = _calculate_damage(move, attacker, defender, crit_level)
-    game.players[team][target.id].take_damage(damage)
+    game.players[team]['team'][target.id].take_damage(damage)
 
 def _damage_ailment(game, target, move):
     _damage(game, target, move)
@@ -141,8 +141,8 @@ def _damage_heal(game, target, move):
     crit_level = game.players[team]['crit_level']
     damage = _calculate_damage(move, attacker, defender, crit_level)
     drain = math.floor(damage * move.meta['drain']/100)
-    game.players[team][target.id].take_damage(damage)
-    game.players[team][attacker.id].heal(drain)
+    game.players[team]['team'][target.id].take_damage(damage)
+    game.players[team]['team'][attacker.id].heal(drain)
 
 def _damage_lower(game, target, move):
     _damage(game, target, move)
@@ -152,7 +152,7 @@ def _damage_lower(game, target, move):
 def _damage_raise(game, target, move):
     _damage(game, target, move)
     if random.randrange(0,100,1) < move.effect_chance:
-        team = target.id[:len(target.id)/2]
+        team = target.id[:len(target.id)//2]
         stat_target = game.get_opponent_active_pokemon(team)
         _net_good_stats(game, stat_target, move)
 
@@ -160,7 +160,7 @@ def _heal(game, target, move):
     team = target.get_team_id()
     max_hp = target.stats['hp'].max
     heal_amount = math.floor(max_hp * move.meta['healing']/100)
-    game.players[team][target.id].heal(heal_amount)
+    game.players[team]['team'][target.id].heal(heal_amount)
 
 def _field(game, target, move):
     pass
@@ -169,7 +169,7 @@ def _switch(game, target, move):
     pass
 
 def _net_good_stats(game, target, move):
-    team = target.id[:len(target.id)/2]
+    team = target.id[:len(target.id)//2]
     for change in move.stat_changes:
         stat = change['stat']['name']
         levels = change['change']
@@ -190,7 +190,7 @@ def _whole_field(game, target, move):
     pass
 
 def _find_target_id(game, target, poke_id):
-    team_id = poke_id[:len(poke_id)/2]
+    team_id = poke_id[:len(poke_id)//2]
     if target in ['specific-move', 'selected-pokemon-me-first', 'ally', 'all-pokemon']:
         return None # these are uncommon
     elif target in ['users-field', 'user-and-allies']:
@@ -243,7 +243,7 @@ class MoveSet:
         moves = [m for m in moves if m.pp > 0]
         if len(moves) is 0:
             moves.append(self.struggle)
-        desired_move = [m for m in moves if m.name is name][0]
+        desired_move = [m for m in moves if m.name == name][0]
         return desired_move
 
 

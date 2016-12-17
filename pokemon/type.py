@@ -27,5 +27,5 @@ class Type(Enum):
     def advantage(self, types):
         total_advantage = 1
         for t in set(types):
-            total_advantage *= pokemon.data.TYPE_CHART[self.value][Type[t].value]
+            total_advantage *= pokemon.data.TYPE_CHART[self.value][t.value]
         return total_advantage

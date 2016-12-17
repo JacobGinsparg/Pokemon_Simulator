@@ -37,12 +37,12 @@ class Pokemon:
         self.moveset = pokemon.move.MoveSet(self.id, move_list)
         self.stats = pokemon.stats.StatSet(poke_json['base_stats'], self.nature, evs, ivs)
         self.ailments = {
-            'hard': None,
+            'hard': {'name': None, 'turns': -1},
             'soft': []
         }
 
     def get_team_id(self):
-        return self.id[:len(self.id)/2]
+        return self.id[:len(self.id)//2]
 
     def take_damage(self, amount):
         self.stats['hp'].take_damage(amount)
@@ -65,7 +65,7 @@ class Pokemon:
             })
 
     def is_afflicted_by(self, ailment):
-        return ailment in [a['name'] for a in self.ailments['soft']] + [self.ailments['hard']['name']]
+        return ailment in [a['name'] for a in self.ailments['soft']] or ailment is self.ailments['hard']['name']
 
     def faint(self):
         self.ailments['hard'] = {
